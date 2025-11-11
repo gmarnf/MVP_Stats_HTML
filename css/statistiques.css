@@ -1,0 +1,35 @@
+#cadre {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.player-card {
+  background: #0c1118;
+  border: 1px solid #1d2634;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.player-card h3 {
+  margin: 0 0 8px 0;
+}
+
+.player-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.player-stats .stat {
+  background: #0b0f14;
+  border: 1px solid #1c2432;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.player-stats .stat .value {
+  font-size: 18px;
+  font-weight: 700;
+}
