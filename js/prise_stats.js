@@ -1,10 +1,16 @@
-// Logique de saisie des statistiques (démo avec 3 joueurs)
+// Démo de joueurs et logique de saisie des stats
 
-const joueurs = [
+const joueurs = loadLocal("joueursData", [
   { numero: 4, nom: "Joueur 4", t2: 0, t3: 0, lf: 0, reb: 0, pd: 0, fautes: 0 },
   { numero: 7, nom: "Joueur 7", t2: 0, t3: 0, lf: 0, reb: 0, pd: 0, fautes: 0 },
   { numero: 9, nom: "Joueur 9", t2: 0, t3: 0, lf: 0, reb: 0, pd: 0, fautes: 0 },
-];
+  { numero: 11, nom: "Joueur 11", t2: 0, t3: 0, lf: 0, reb: 0, pd: 0, fautes: 0 },
+  { numero: 15, nom: "Joueur 15", t2: 0, t3: 0, lf: 0, reb: 0, pd: 0, fautes: 0 }
+]);
+
+function saveJoueurs() {
+  saveLocal("joueursData", joueurs);
+}
 
 function renderCadre() {
   const cadre = getEl("cadre");
@@ -42,21 +48,29 @@ function updateValue(id, value) {
   if (el) el.textContent = value;
 }
 
-function enregistrerTir(numero, typeTir) {
-  const j = findJoueur(numero);
-  if (!j) return;
-
-  if (typeTir === "2pts") j.t2 += 1;
-  else if (typeTir === "3pts") j.t3 += 1;
-
-  updateValue(`v_t2_${numero}`, j.t2);
-  updateValue(`v_t3_${numero}`, j.t3);
-
+function logIfActifs(numero, label) {
   const periode = getPeriode();
   const score = getScore();
   const actifs = getActifs();
   if (actifs.length === 5) {
-    ajouterLog(periode, numero, `tir ${typeTir} réussi`, score, actifs);
+    ajouterLog(periode, numero, label, score, actifs);
+  }
+}
+
+function enregistrerTir(numero, typeTir) {
+  const j = findJoueur(numero);
+  if (!j) return;
+
+  if (typeTir === "2pts") {
+    j.t2 += 1;
+    updateValue(`v_t2_${numero}`, j.t2);
+    saveJoueurs();
+    logIfActifs(numero, "tir 2pts réussi");
+  } else if (typeTir === "3pts") {
+    j.t3 += 1;
+    updateValue(`v_t3_${numero}`, j.t3);
+    saveJoueurs();
+    logIfActifs(numero, "tir 3pts réussi");
   }
 }
 
@@ -65,13 +79,8 @@ function enregistrerLF(numero) {
   if (!j) return;
   j.lf += 1;
   updateValue(`v_lf_${numero}`, j.lf);
-
-  const periode = getPeriode();
-  const score = getScore();
-  const actifs = getActifs();
-  if (actifs.length === 5) {
-    ajouterLog(periode, numero, "lancer franc réussi", score, actifs);
-  }
+  saveJoueurs();
+  logIfActifs(numero, "lancer franc réussi");
 }
 
 function enregistrerReb(numero) {
@@ -79,13 +88,8 @@ function enregistrerReb(numero) {
   if (!j) return;
   j.reb += 1;
   updateValue(`v_reb_${numero}`, j.reb);
-
-  const periode = getPeriode();
-  const score = getScore();
-  const actifs = getActifs();
-  if (actifs.length === 5) {
-    ajouterLog(periode, numero, "rebond", score, actifs);
-  }
+  saveJoueurs();
+  logIfActifs(numero, "rebond");
 }
 
 function enregistrerPD(numero) {
@@ -93,13 +97,8 @@ function enregistrerPD(numero) {
   if (!j) return;
   j.pd += 1;
   updateValue(`v_pd_${numero}`, j.pd);
-
-  const periode = getPeriode();
-  const score = getScore();
-  const actifs = getActifs();
-  if (actifs.length === 5) {
-    ajouterLog(periode, numero, "passe décisive", score, actifs);
-  }
+  saveJoueurs();
+  logIfActifs(numero, "passe décisive");
 }
 
 function enregistrerFaute(numero) {
@@ -107,11 +106,6 @@ function enregistrerFaute(numero) {
   if (!j) return;
   j.fautes += 1;
   updateValue(`v_f_${numero}`, j.fautes);
-
-  const periode = getPeriode();
-  const score = getScore();
-  const actifs = getActifs();
-  if (actifs.length === 5) {
-    ajouterLog(periode, numero, "faute", score, actifs);
-  }
+  saveJoueurs();
+  logIfActifs(numero, "faute");
 }
