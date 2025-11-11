@@ -1,9 +1,18 @@
-// Journalisation, affichage et export CSV avec persistance locale
+// journal.js
+// Journalisation, affichage HTML, export CSV, reset et gestion du score avec persistance locale
 
+// Chargement initial depuis localStorage
 let journalStats = loadLocal("journalStats", []);
+let scoreEquipe = loadLocal("scoreEquipe", 0);
+let scoreAdversaire = loadLocal("scoreAdversaire", 0);
 
 /**
  * Ajoute une entrée au journal
+ * @param {string} periode - ex: "Q1", "Q2", "OT"
+ * @param {number|string} joueur - numéro du joueur ou "-" pour les événements d’équipe/adversaire
+ * @param {string} statistique - libellé de l’événement
+ * @param {string} score - score au format "xx-yy"
+ * @param {Array<number>} joueursActifs - 5 numéros séparés par "-"
  */
 function ajouterLog(periode, joueur, statistique, score, joueursActifs) {
   const entree = {
@@ -19,7 +28,7 @@ function ajouterLog(periode, joueur, statistique, score, joueursActifs) {
 }
 
 /**
- * Affiche le journal en HTML
+ * Affiche le journal en HTML dans #journalContainer
  */
 function afficherJournalHTML() {
   const container = getEl("journalContainer");
@@ -67,7 +76,7 @@ function afficherJournalHTML() {
 }
 
 /**
- * Exporte le journal en CSV
+ * Exporte le journal en CSV (séparateur ';')
  */
 function exporterJournalCSV() {
   const header = "Heure;Période;Joueur;Statistique;Score;Joueurs actifs\n";
@@ -88,7 +97,7 @@ function exporterJournalCSV() {
 }
 
 /**
- * Réinitialise le journal
+ * Réinitialise le journal (vide et met à jour l’affichage)
  */
 function resetJournal() {
   journalStats = [];
@@ -99,17 +108,26 @@ function resetJournal() {
   }
 }
 
-// Variables de score
-let scoreEquipe = loadLocal("scoreEquipe", 0);
-let scoreAdversaire = loadLocal("scoreAdversaire", 0);
+/* ===========================
+   Gestion du score (équipe/adversaire)
+   =========================== */
 
+/**
+ * Met à jour l’affichage et persiste le score
+ */
 function updateScoreBoard() {
-  getEl("scoreEquipe").textContent = scoreEquipe;
-  getEl("scoreAdversaire").textContent = scoreAdversaire;
+  const elEq = getEl("scoreEquipe");
+  const elAdv = getEl("scoreAdversaire");
+  if (elEq) elEq.textContent = scoreEquipe;
+  if (elAdv) elAdv.textContent = scoreAdversaire;
   saveLocal("scoreEquipe", scoreEquipe);
   saveLocal("scoreAdversaire", scoreAdversaire);
 }
 
+/**
+ * Ajoute des points à l’équipe et journalise l’événement
+ * @param {number} points - 1, 2 ou 3
+ */
 function ajouterPointsEquipe(points) {
   scoreEquipe += points;
   updateScoreBoard();
@@ -120,6 +138,10 @@ function ajouterPointsEquipe(points) {
   }
 }
 
+/**
+ * Ajoute des points à l’adversaire et journalise l’événement
+ * @param {number} points - 1, 2 ou 3
+ */
 function ajouterPointsAdversaire(points) {
   scoreAdversaire += points;
   updateScoreBoard();
@@ -128,4 +150,17 @@ function ajouterPointsAdversaire(points) {
   if (actifs.length === 5) {
     ajouterLog(periode, "-", `+${points} points adversaire`, `${scoreEquipe}-${scoreAdversaire}`, actifs);
   }
+}
+
+/* ===========================
+   Helpers d’initialisation (optionnel)
+   =========================== */
+
+/**
+ * Initialise l’affichage du journal et du score au chargement
+ */
+function initJournalModule() {
+  updateScoreBoard();
+  // Ne pas afficher automatiquement le tableau du journal,
+  // il sera affiché sur clic "Voir le journal en HTML"
 }
