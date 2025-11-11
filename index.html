@@ -53,6 +53,36 @@
       <div id="cadre"></div>
     </section>
 
+<section class="ui-section">
+  <h2>Chronomètre</h2>
+  <div>
+    <label>
+      Durée d’un quart-temps (minutes)
+      <input id="quartDuration" type="number" value="10" min="1" />
+    </label>
+    <button id="btnStartTimer">Démarrer</button>
+    <button id="btnPauseTimer">Pause</button>
+    <button id="btnResetTimer">Réinitialiser</button>
+  </div>
+  <div id="timerDisplay" class="timer-display">10:00</div>
+</section>
+
+    <section class="ui-section">
+  <h2>Score</h2>
+  <div id="scoreBoard">
+    <span id="scoreEquipe">0</span> - <span id="scoreAdversaire">0</span>
+  </div>
+  <div class="score-btns">
+    <button onclick="ajouterPointsEquipe(1)">+1 Équipe</button>
+    <button onclick="ajouterPointsEquipe(2)">+2 Équipe</button>
+    <button onclick="ajouterPointsEquipe(3)">+3 Équipe</button>
+    <button onclick="ajouterPointsAdversaire(1)">+1 Adversaire</button>
+    <button onclick="ajouterPointsAdversaire(2)">+2 Adversaire</button>
+    <button onclick="ajouterPointsAdversaire(3)">+3 Adversaire</button>
+  </div>
+</section>
+
+    
     <section class="ui-section">
       <h2>Journal des statistiques</h2>
       <div id="journalContainer" class="journal-container">
