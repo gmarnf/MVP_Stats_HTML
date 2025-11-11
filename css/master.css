@@ -105,3 +105,21 @@ input, select {
 .journal-container {
   overflow-x: auto;
 }
+
+#scoreBoard {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+.score-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.timer-display {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 12px;
+  color: var(--accent-2, #ffd166);
+}
