@@ -2,12 +2,20 @@
 
 function initUI() {
   renderCadre();
+  renderActifsSelector(joueurs);
 
-  const btnVoir = getEl("btnVoirJournal");
-  const btnCSV = getEl("btnExportCSV");
+  // Chronomètre
+  getEl("btnStartTimer").addEventListener("click", startTimer);
+  getEl("btnPauseTimer").addEventListener("click", pauseTimer);
+  getEl("btnResetTimer").addEventListener("click", resetTimer);
 
-  if (btnVoir) btnVoir.addEventListener("click", afficherJournalHTML);
-  if (btnCSV) btnCSV.addEventListener("click", exporterJournalCSV);
+  // Score
+  updateScoreBoard();
+
+  // Journal
+  getEl("btnVoirJournal").addEventListener("click", afficherJournalHTML);
+  getEl("btnExportCSV").addEventListener("click", exporterJournalCSV);
+  getEl("btnResetJournal").addEventListener("click", resetJournal);
 }
 
 document.addEventListener("DOMContentLoaded", initUI);
