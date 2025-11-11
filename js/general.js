@@ -1,4 +1,5 @@
-// Utilitaires généraux (version globale)
+// general.js
+// Fonctions utilitaires globales
 
 function parseActifs(text) {
   return text
@@ -20,7 +21,7 @@ function saveLocal(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
-    console.warn("saveLocal error", e);
+    console.warn("Erreur saveLocal", e);
   }
 }
 
@@ -29,7 +30,7 @@ function loadLocal(key, fallback) {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
   } catch (e) {
-    console.warn("loadLocal error", e);
+    console.warn("Erreur loadLocal", e);
     return fallback;
   }
 }
