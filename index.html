@@ -11,16 +11,17 @@
   <header class="app-header">
     <h1>MVP Stats Basket</h1>
     <nav class="actions">
-      <button id="btnVoirJournal" type="button">Voir le journal en HTML</button>
-      <button id="btnExportCSV" type="button">Exporter le journal en CSV</button>
-      <button id="btnResetJournal" type="button" class="danger">Effacer le journal</button>
+      <button id="btnVoirJournal">Voir le journal en HTML</button>
+      <button id="btnExportCSV">Exporter le journal en CSV</button>
+      <button id="btnResetJournal" class="danger">Effacer le journal</button>
     </nav>
   </header>
 
   <main class="app-main">
+    <!-- Paramètres du match -->
     <section class="ui-section">
       <h2>Paramètres du match</h2>
-      <form id="form_score_periode" class="period-score-form" onsubmit="return false;">
+      <form id="form_score_periode" onsubmit="return false;">
         <div class="row">
           <label>
             Période
@@ -33,11 +34,10 @@
             </select>
           </label>
           <label>
-            Score (ex: 45-42)
+            Score manuel (optionnel)
             <input id="scoreInput" type="text" placeholder="00-00" />
           </label>
         </div>
-
         <div class="row">
           <div>
             <div class="label">Sélection des 5 joueurs actifs</div>
@@ -48,41 +48,44 @@
       </form>
     </section>
 
+    <!-- Chronomètre -->
+    <section class="ui-section">
+      <h2>Chronomètre</h2>
+      <div>
+        <label>
+          Durée d’un quart-temps (minutes)
+          <input id="quartDuration" type="number" value="10" min="1" />
+        </label>
+        <button id="btnStartTimer">Démarrer</button>
+        <button id="btnPauseTimer">Pause</button>
+        <button id="btnResetTimer">Réinitialiser</button>
+      </div>
+      <div id="timerDisplay" class="timer-display">10:00</div>
+    </section>
+
+    <!-- Score -->
+    <section class="ui-section">
+      <h2>Score</h2>
+      <div id="scoreBoard">
+        <span id="scoreEquipe">0</span> - <span id="scoreAdversaire">0</span>
+      </div>
+      <div class="score-btns">
+        <button onclick="ajouterPointsEquipe(1)">+1 Équipe</button>
+        <button onclick="ajouterPointsEquipe(2)">+2 Équipe</button>
+        <button onclick="ajouterPointsEquipe(3)">+3 Équipe</button>
+        <button onclick="ajouterPointsAdversaire(1)">+1 Adversaire</button>
+        <button onclick="ajouterPointsAdversaire(2)">+2 Adversaire</button>
+        <button onclick="ajouterPointsAdversaire(3)">+3 Adversaire</button>
+      </div>
+    </section>
+
+    <!-- Prise de statistiques -->
     <section class="ui-section">
       <h2>Prise de statistiques</h2>
       <div id="cadre"></div>
     </section>
 
-<section class="ui-section">
-  <h2>Chronomètre</h2>
-  <div>
-    <label>
-      Durée d’un quart-temps (minutes)
-      <input id="quartDuration" type="number" value="10" min="1" />
-    </label>
-    <button id="btnStartTimer">Démarrer</button>
-    <button id="btnPauseTimer">Pause</button>
-    <button id="btnResetTimer">Réinitialiser</button>
-  </div>
-  <div id="timerDisplay" class="timer-display">10:00</div>
-</section>
-
-    <section class="ui-section">
-  <h2>Score</h2>
-  <div id="scoreBoard">
-    <span id="scoreEquipe">0</span> - <span id="scoreAdversaire">0</span>
-  </div>
-  <div class="score-btns">
-    <button onclick="ajouterPointsEquipe(1)">+1 Équipe</button>
-    <button onclick="ajouterPointsEquipe(2)">+2 Équipe</button>
-    <button onclick="ajouterPointsEquipe(3)">+3 Équipe</button>
-    <button onclick="ajouterPointsAdversaire(1)">+1 Adversaire</button>
-    <button onclick="ajouterPointsAdversaire(2)">+2 Adversaire</button>
-    <button onclick="ajouterPointsAdversaire(3)">+3 Adversaire</button>
-  </div>
-</section>
-
-    
+    <!-- Journal -->
     <section class="ui-section">
       <h2>Journal des statistiques</h2>
       <div id="journalContainer" class="journal-container">
