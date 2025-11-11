@@ -98,3 +98,34 @@ function resetJournal() {
     container.innerHTML = `<p class="muted">Journal vidé.</p>`;
   }
 }
+
+// Variables de score
+let scoreEquipe = loadLocal("scoreEquipe", 0);
+let scoreAdversaire = loadLocal("scoreAdversaire", 0);
+
+function updateScoreBoard() {
+  getEl("scoreEquipe").textContent = scoreEquipe;
+  getEl("scoreAdversaire").textContent = scoreAdversaire;
+  saveLocal("scoreEquipe", scoreEquipe);
+  saveLocal("scoreAdversaire", scoreAdversaire);
+}
+
+function ajouterPointsEquipe(points) {
+  scoreEquipe += points;
+  updateScoreBoard();
+  const periode = getPeriode();
+  const actifs = getActifs();
+  if (actifs.length === 5) {
+    ajouterLog(periode, "-", `+${points} points équipe`, `${scoreEquipe}-${scoreAdversaire}`, actifs);
+  }
+}
+
+function ajouterPointsAdversaire(points) {
+  scoreAdversaire += points;
+  updateScoreBoard();
+  const periode = getPeriode();
+  const actifs = getActifs();
+  if (actifs.length === 5) {
+    ajouterLog(periode, "-", `+${points} points adversaire`, `${scoreEquipe}-${scoreAdversaire}`, actifs);
+  }
+}
