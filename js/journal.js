@@ -1,14 +1,13 @@
-// Journalisation et affichage
+// Journalisation, affichage et export CSV avec persistance locale
 
-let journalStats = [];
+let journalStats = loadLocal("journalStats", []);
 
 /**
  * Ajoute une entrée au journal
  */
 function ajouterLog(periode, joueur, statistique, score, joueursActifs) {
-  const horodatage = nowTime();
   const entree = {
-    heure: horodatage,
+    heure: nowTime(),
     periode,
     joueur,
     statistique,
@@ -16,6 +15,7 @@ function ajouterLog(periode, joueur, statistique, score, joueursActifs) {
     joueursActifs: joueursActifs.join("-"),
   };
   journalStats.push(entree);
+  saveLocal("journalStats", journalStats);
 }
 
 /**
@@ -25,8 +25,13 @@ function afficherJournalHTML() {
   const container = getEl("journalContainer");
   if (!container) return;
 
+  if (!journalStats.length) {
+    container.innerHTML = `<p class="muted">Aucune entrée pour le moment.</p>`;
+    return;
+  }
+
   let html = `
-    <table class="table">
+    <table class="table journal-table">
       <thead>
         <tr>
           <th>Heure</th>
@@ -65,11 +70,12 @@ function afficherJournalHTML() {
  * Exporte le journal en CSV
  */
 function exporterJournalCSV() {
-  let csv = "Heure;Période;Joueur;Statistique;Score;Joueurs actifs\n";
-  journalStats.forEach(entry => {
-    csv += `${entry.heure};${entry.periode};${entry.joueur};${entry.statistique};${entry.score};${entry.joueursActifs}\n`;
-  });
+  const header = "Heure;Période;Joueur;Statistique;Score;Joueurs actifs\n";
+  const rows = journalStats.map(entry =>
+    `${entry.heure};${entry.periode};${entry.joueur};${entry.statistique};${entry.score};${entry.joueursActifs}`
+  ).join("\n");
 
+  const csv = header + rows + "\n";
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -79,4 +85,16 @@ function exporterJournalCSV() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+/**
+ * Réinitialise le journal
+ */
+function resetJournal() {
+  journalStats = [];
+  saveLocal("journalStats", journalStats);
+  const container = getEl("journalContainer");
+  if (container) {
+    container.innerHTML = `<p class="muted">Journal vidé.</p>`;
+  }
 }
