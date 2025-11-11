@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MVP Stats Basket</title>
+  <link rel="stylesheet" href="css/master.css" />
+  <link rel="stylesheet" href="css/statistiques.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>MVP Stats Basket</h1>
+    <nav class="actions">
+      <button id="btnVoirJournal" type="button">Voir le journal en HTML</button>
+      <button id="btnExportCSV" type="button">Exporter le journal en CSV</button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section class="ui-section">
+      <h2>Prise de statistiques</h2>
+      <div id="cadre"></div>
+    </section>
+
+    <section class="ui-section">
+      <h2>Période & score</h2>
+      <form id="form_score_periode" class="period-score-form">
+        <label>
+          Période
+          <select id="periodeSelect">
+            <option value="Q1">Q1</option>
+            <option value="Q2">Q2</option>
+            <option value="Q3">Q3</option>
+            <option value="Q4">Q4</option>
+            <option value="OT">OT</option>
+          </select>
+        </label>
+        <label>
+          Score (ex: 45-42)
+          <input id="scoreInput" type="text" placeholder="00-00" />
+        </label>
+        <label>
+          Joueurs actifs (5 numéros séparés par -)
+          <input id="actifsInput" type="text" placeholder="4-7-9-11-15" />
+        </label>
+      </form>
+    </section>
+
+    <section class="ui-section">
+      <h2>Journal</h2>
+      <div id="journalContainer" class="journal-container"></div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>© MVP Stats</small>
+  </footer>
+
+  <script src="js/general.js"></script>
+  <script src="js/calendrier.js"></script>
+  <script src="js/journal.js"></script>
+  <script src="js/prise_stats.js"></script>
+  <script src="js/loader.js"></script>
+</body>
+</html>
