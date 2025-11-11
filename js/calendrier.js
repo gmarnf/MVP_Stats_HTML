@@ -1,4 +1,5 @@
-// Gestion des périodes, score et joueurs actifs
+// calendrier.js
+// Gestion des périodes, score manuel et joueurs actifs
 
 function getPeriode() {
   return getEl("periodeSelect").value || "Q1";
@@ -24,9 +25,27 @@ function renderActifsSelector(joueurs) {
       #${j.numero} — ${j.nom}
     </label>
   `).join("");
+
+  // Charger sélection depuis localStorage si disponible
+  const saved = loadLocal("actifsSelection", []);
+  if (Array.isArray(saved) && saved.length) {
+    const inputs = container.querySelectorAll("input[type='checkbox']");
+    inputs.forEach(inp => {
+      inp.checked = saved.includes(parseInt(inp.value, 10));
+    });
+  }
+
+  // Sauvegarder la sélection
+  container.addEventListener("change", () => {
+    const checked = Array.from(container.querySelectorAll("input:checked"))
+      .map(cb => parseInt(cb.value, 10));
+    saveLocal("actifsSelection", checked);
+  });
 }
 
-// Chronomètre
+/* ===========================
+   Chronomètre
+   =========================== */
 let timerInterval = null;
 let remainingSeconds = 0;
 
